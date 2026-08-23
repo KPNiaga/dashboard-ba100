@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KPNiagaAnalytics</title>
+    <title>Dashboard BA100</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
@@ -33,8 +33,8 @@
                         <i class="fa-solid fa-chart-line text-xl text-blue-300"></i>
                     </div>
                     <div>
-                        <h1 class="text-xl font-bold tracking-tight">KPNiagaAnalytics</h1>
-                        <p class="text-[10px] text-blue-200">Sistem Analisis Transaksi & Prestasi</p>
+                        <h1 class="text-xl font-bold tracking-tight">Dashboard BA100</h1>
+                        <p class="text-[10px] text-blue-200">Sistem Analisis Data & Prestasi BA100</p>
                     </div>
                 </div>
                 <div class="flex items-center gap-4 text-sm">
@@ -111,58 +111,80 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-                <!-- Card 1 -->
-                <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-5 relative overflow-hidden">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                <!-- Card 1: Jumlah Tempahan Diterima -->
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-4 relative overflow-hidden flex flex-col justify-between">
                     <div class="flex justify-between items-start mb-2">
                         <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Jumlah Tempahan Diterima</p>
                         <div class="p-2 bg-blue-50 rounded-xl text-blue-600">
                             <i class="fa-solid fa-boxes-stacked text-lg"></i>
                         </div>
                     </div>
-                    <h3 class="text-2xl font-black text-slate-800" id="card-tempahan">RM 0</h3>
-                    <p class="text-[11px] text-slate-400 mt-1" id="card-tempahan-sub">daripada 0 tempahan</p>
-                </div>
-                
-                <!-- Card 2 -->
-                <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-5 relative overflow-hidden">
-                    <div class="flex justify-between items-start mb-2">
-                        <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Jumlah Jualan</p>
-                        <div class="p-2 bg-emerald-50 rounded-xl text-emerald-600">
-                            <i class="fa-solid fa-sack-dollar text-lg"></i>
-                        </div>
+                    <div>
+                        <h3 class="text-2xl font-black text-slate-800" id="card-tempahan">RM 0</h3>
+                        <p class="text-[11px] text-slate-400 mt-1" id="card-tempahan-sub">daripada 0 tempahan</p>
                     </div>
-                    <h3 class="text-2xl font-black text-slate-800" id="card-jualan">RM 0</h3>
-                    <p class="text-[11px] text-slate-400 mt-1" id="card-jualan-sub">daripada 0 tempahan</p>
                 </div>
 
-                <!-- Card 3 -->
-                <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-5 relative overflow-hidden flex flex-col justify-between">
-                    <div class="flex justify-between items-start mb-2">
-                        <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Pencapaian</p>
-                        <div class="p-2 bg-amber-50 rounded-xl text-amber-600">
-                            <i class="fa-solid fa-bullseye text-lg"></i>
-                        </div>
-                    </div>
-                    <div class="flex items-end gap-2">
-                        <h3 class="text-3xl font-black" id="card-pencapaian">0%</h3>
-                    </div>
-                    <div class="w-full bg-slate-100 rounded-full h-2.5 mt-2 border border-slate-200/60 overflow-hidden">
-                        <div id="card-pencapaian-bar" class="h-full rounded-full transition-all duration-1000 w-0"></div>
-                    </div>
-                    <p class="text-[11px] text-slate-400 mt-2">Sasaran: RM 13,475,500</p>
-                </div>
-
-                <!-- Card 4 -->
-                <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-5 relative overflow-hidden">
+                <!-- Card 2: Outlet Tempahan -->
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-4 relative overflow-hidden flex flex-col justify-between">
                     <div class="flex justify-between items-start mb-2">
                         <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Outlet Tempahan</p>
                         <div class="p-2 bg-purple-50 rounded-xl text-purple-600">
                             <i class="fa-solid fa-store text-lg"></i>
                         </div>
                     </div>
-                    <h3 class="text-2xl font-black text-slate-800" id="card-outlet">0</h3>
-                    <p class="text-[11px] text-slate-400 mt-1">outlet membuat tempahan</p>
+                    <div>
+                        <h3 class="text-2xl font-black text-slate-800" id="card-outlet">0</h3>
+                        <p class="text-[11px] text-slate-400 mt-1">outlet membuat tempahan</p>
+                    </div>
+                </div>
+
+                <!-- Card 3: Jumlah Jualan -->
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-4 relative overflow-hidden flex flex-col justify-between">
+                    <div class="flex justify-between items-start mb-2">
+                        <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Jumlah Jualan</p>
+                        <div class="p-2 bg-emerald-50 rounded-xl text-emerald-600">
+                            <i class="fa-solid fa-sack-dollar text-lg"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-black text-slate-800" id="card-jualan">RM 0</h3>
+                        <p class="text-[11px] text-slate-400 mt-1" id="card-jualan-sub">daripada 0 tempahan</p>
+                    </div>
+                </div>
+
+                <!-- Card 4: Untung Jualan -->
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-4 relative overflow-hidden flex flex-col justify-between">
+                    <div class="flex justify-between items-start mb-2">
+                        <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Untung Jualan</p>
+                        <div class="p-2 bg-teal-50 rounded-xl text-teal-600">
+                            <i class="fa-solid fa-coins text-lg"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-black text-slate-800" id="card-untung">RM 0</h3>
+                        <p class="text-[11px] text-slate-400 mt-1">Tidak mengambilkira kos lain</p>
+                    </div>
+                </div>
+
+                <!-- Card 5: Pencapaian -->
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-4 relative overflow-hidden flex flex-col justify-between">
+                    <div class="flex justify-between items-start mb-2">
+                        <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Pencapaian</p>
+                        <div class="p-2 bg-amber-50 rounded-xl text-amber-600">
+                            <i class="fa-solid fa-bullseye text-lg"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex items-end gap-2">
+                            <h3 class="text-2xl font-black" id="card-pencapaian">0%</h3>
+                        </div>
+                        <div class="w-full bg-slate-100 rounded-full h-2 mt-1.5 border border-slate-200/60 overflow-hidden">
+                            <div id="card-pencapaian-bar" class="h-full rounded-full transition-all duration-1000 w-0"></div>
+                        </div>
+                        <p class="text-[11px] text-slate-400 mt-1">Sasaran: RM 13,475,500</p>
+                    </div>
                 </div>
             </div>
 
@@ -472,6 +494,13 @@
             rawData = data.map(row => {
                 const poVal = getColValue(row, ['PO AMOUNT (RM)', 'PO AMOUNT']);
                 const invVal = getColValue(row, ['INVOICE AMOUNT (RM)', 'INVOICE AMOUNT']);
+                let untungVal = getColValue(row, ['UNTUNG JUALAN (RM)', 'UNTUNG JUALAN', 'PROFIT (RM)', 'PROFIT', 'UNTUNG']);
+                if (!untungVal) {
+                    const keys = Object.keys(row);
+                    if (keys.length >= 22) {
+                        untungVal = row[keys[21]];
+                    }
+                }
                 const picRaw = getColValue(row, ['P.I.C. SALES', 'PIC SALES', 'PIC']);
                 const jkanRaw = getColValue(row, ['JKAN', 'JKAN/NEGERI', 'WILAYAH', 'NEGERI']);
                 const kategoriRaw = getColValue(row, ['KATEGORI OUTLET', 'KATEGORI']);
@@ -487,6 +516,7 @@
                     minggu: cleanStr(weekRaw) || 'W1',
                     poAmount: parseNum(poVal),
                     invoiceAmount: parseNum(invVal),
+                    untungJualan: parseNum(untungVal),
                     picRaw: cleanStr(picRaw),
                     pic: matchPIC(picRaw),
                     jkanRaw: cleanStr(jkanRaw),
@@ -612,6 +642,7 @@
             // Calculate Scorecards
             const totalPO = filtered.reduce((sum, r) => sum + r.poAmount, 0);
             const totalSales = filtered.reduce((sum, r) => sum + r.invoiceAmount, 0);
+            const totalUntung = filtered.reduce((sum, r) => sum + r.untungJualan, 0);
             const countPO = filtered.filter(r => r.poAmount > 0).length;
             const countSales = filtered.filter(r => r.invoiceAmount > 0).length;
             
@@ -628,6 +659,7 @@
             document.getElementById('card-tempahan-sub').innerText = `daripada ${countPO} tempahan`;
             document.getElementById('card-jualan').innerText = formatRM(totalSales);
             document.getElementById('card-jualan-sub').innerText = `daripada ${countSales} tempahan`;
+            document.getElementById('card-untung').innerText = formatRM(totalUntung);
             document.getElementById('card-outlet').innerText = uniqueOutlets.size;
 
             // Pencapaian Card
