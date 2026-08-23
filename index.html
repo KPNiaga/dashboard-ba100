@@ -79,34 +79,41 @@
         <!-- PAGE 1: DATA TRANSAKSI -->
         <div id="page-transaksi" class="hidden space-y-6">
             
+            <!-- Filter Section with Month Range (Dari Bulan - Hingga Bulan) -->
             <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200/80 flex flex-wrap gap-4 items-end">
-                <div class="flex-1 min-w-[160px]">
-                    <label class="block text-xs font-bold text-slate-500 mb-1.5 uppercase tracking-wider">Bulan</label>
-                    <select id="filter-bulan" class="w-full border-slate-300 rounded-lg shadow-sm p-2 text-sm border focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-slate-50" onchange="updatePageTransaksi()">
+                <div class="flex-1 min-w-[140px]">
+                    <label class="block text-xs font-bold text-slate-500 mb-1.5 uppercase tracking-wider">Dari Bulan</label>
+                    <select id="filter-bulan-mula" class="w-full border-slate-300 rounded-lg shadow-sm p-2 text-sm border focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-slate-50" onchange="updatePageTransaksi()">
                         <option value="ALL">Semua Bulan</option>
                     </select>
                 </div>
-                <div class="flex-1 min-w-[160px]">
+                <div class="flex-1 min-w-[140px]">
+                    <label class="block text-xs font-bold text-slate-500 mb-1.5 uppercase tracking-wider">Hingga Bulan</label>
+                    <select id="filter-bulan-akhir" class="w-full border-slate-300 rounded-lg shadow-sm p-2 text-sm border focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-slate-50" onchange="updatePageTransaksi()">
+                        <option value="ALL">Semua Bulan</option>
+                    </select>
+                </div>
+                <div class="flex-1 min-w-[140px]">
                     <label class="block text-xs font-bold text-slate-500 mb-1.5 uppercase tracking-wider">JKAN</label>
                     <select id="filter-jkan" class="w-full border-slate-300 rounded-lg shadow-sm p-2 text-sm border focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-slate-50" onchange="updatePageTransaksi()">
                         <option value="ALL">Semua JKAN</option>
                     </select>
                 </div>
-                <div class="flex-1 min-w-[160px]">
+                <div class="flex-1 min-w-[140px]">
                     <label class="block text-xs font-bold text-slate-500 mb-1.5 uppercase tracking-wider">Kategori Outlet</label>
                     <select id="filter-kategori" class="w-full border-slate-300 rounded-lg shadow-sm p-2 text-sm border focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-slate-50" onchange="updatePageTransaksi()">
                         <option value="ALL">Semua Kategori</option>
                     </select>
                 </div>
-                <div class="flex-1 min-w-[200px]">
+                <div class="flex-1 min-w-[180px]">
                     <label class="block text-xs font-bold text-slate-500 mb-1.5 uppercase tracking-wider">Pegawai Jualan</label>
                     <select id="filter-pegawai" class="w-full border-slate-300 rounded-lg shadow-sm p-2 text-sm border focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-slate-50" onchange="updatePageTransaksi()">
                         <option value="ALL">Semua Pegawai</option>
                     </select>
                 </div>
                 <div>
-                    <button onclick="resetFilters('transaksi')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-lg text-sm font-semibold transition-colors border border-slate-300">
-                        <i class="fa-solid fa-arrows-rotate mr-1"></i> Reset
+                    <button onclick="resetFilters('transaksi')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-lg text-sm font-semibold transition-colors border border-slate-300 flex items-center gap-1.5">
+                        <i class="fa-solid fa-arrows-rotate"></i> Reset
                     </button>
                 </div>
             </div>
@@ -456,7 +463,6 @@
             return cleanStr(jkanRaw);
         }
 
-        // Main Data Retrieval
         async function fetchData() {
             setLoadingState(true);
             try {
@@ -478,18 +484,15 @@
                     },
                     error: function(err) {
                         console.error("PapaParse Error:", err);
-                        alert("Gagal memproses data CSV.");
                         setLoadingState(false, false);
                     }
                 });
             } catch (error) {
                 console.error("Fetch Error:", error);
-                alert("Gagal memuat turun data.");
                 setLoadingState(false, false);
             }
         }
 
-        // Processing CSV into structured Javascript Object
         function processRawData(data) {
             rawData = data.map(row => {
                 const poVal = getColValue(row, ['PO AMOUNT (RM)', 'PO AMOUNT']);
@@ -580,13 +583,18 @@
             
             const kategories = [...new Set(rawData.map(r => r.kategori))].filter(Boolean).sort();
             
-            // Filter Bulan
-            const elBulan = document.getElementById('filter-bulan');
+            // Filter Bulan Mula & Akhir
+            const elBulanMula = document.getElementById('filter-bulan-mula');
+            const elBulanAkhir = document.getElementById('filter-bulan-akhir');
             const elBulanP2 = document.getElementById('p2-filter-bulan');
-            elBulan.innerHTML = '<option value="ALL">Semua Bulan</option>';
+            
+            elBulanMula.innerHTML = '<option value="ALL">Semua Bulan</option>';
+            elBulanAkhir.innerHTML = '<option value="ALL">Semua Bulan</option>';
             elBulanP2.innerHTML = '<option value="ALL">Sepanjang Tahun</option>';
+            
             months.forEach(m => {
-                elBulan.innerHTML += `<option value="${m}">${m}</option>`;
+                elBulanMula.innerHTML += `<option value="${m}">${m}</option>`;
+                elBulanAkhir.innerHTML += `<option value="${m}">${m}</option>`;
                 elBulanP2.innerHTML += `<option value="${m}">${m}</option>`;
             });
 
@@ -617,7 +625,8 @@
 
         function resetFilters(page) {
             if (page === 'transaksi') {
-                document.getElementById('filter-bulan').value = 'ALL';
+                document.getElementById('filter-bulan-mula').value = 'ALL';
+                document.getElementById('filter-bulan-akhir').value = 'ALL';
                 document.getElementById('filter-jkan').value = 'ALL';
                 document.getElementById('filter-kategori').value = 'ALL';
                 document.getElementById('filter-pegawai').value = 'ALL';
@@ -626,13 +635,32 @@
         }
 
         function updatePageTransaksi() {
-            const fBulan = document.getElementById('filter-bulan').value;
+            let fBulanMula = document.getElementById('filter-bulan-mula').value;
+            let fBulanAkhir = document.getElementById('filter-bulan-akhir').value;
             const fJkan = document.getElementById('filter-jkan').value;
             const fKategori = document.getElementById('filter-kategori').value;
             const fPegawai = document.getElementById('filter-pegawai').value;
 
+            const idxMula = fBulanMula !== 'ALL' ? getMonthIndex(fBulanMula) : -1;
+            const idxAkhir = fBulanAkhir !== 'ALL' ? getMonthIndex(fBulanAkhir) : 999;
+
+            // Auto correction if user selects invalid range (Start > End)
+            if (fBulanMula !== 'ALL' && fBulanAkhir !== 'ALL' && idxMula > idxAkhir) {
+                document.getElementById('filter-bulan-akhir').value = fBulanMula;
+                fBulanAkhir = fBulanMula;
+            }
+
             let filtered = rawData.filter(r => {
-                if (fBulan !== 'ALL' && r.bulan !== fBulan) return false;
+                const rowMonthIdx = getMonthIndex(r.bulan);
+                
+                // Month Range Filtering logic
+                if (rowMonthIdx !== -1) {
+                    if (idxMula !== -1 && rowMonthIdx < idxMula) return false;
+                    if (idxAkhir !== 999 && rowMonthIdx > idxAkhir) return false;
+                } else if (fBulanMula !== 'ALL' || fBulanAkhir !== 'ALL') {
+                    return false;
+                }
+
                 if (fJkan !== 'ALL' && r.jkan !== fJkan) return false;
                 if (fKategori !== 'ALL' && r.kategori !== fKategori) return false;
                 if (fPegawai !== 'ALL' && r.pic !== fPegawai) return false;
@@ -681,12 +709,12 @@
                 elPencapaianBar.className = "h-full rounded-full transition-all duration-1000 bg-emerald-500";
             }
 
-            renderCombineChartTransaksi(filtered, fBulan);
+            renderCombineChartTransaksi(filtered, fBulanMula, fBulanAkhir);
             renderPieChartKategori(filtered);
             renderTableOutlet(filtered);
         }
 
-        function renderCombineChartTransaksi(data, currentMonthFilter) {
+        function renderCombineChartTransaksi(data, fBulanMula, fBulanAkhir) {
             const ctx = document.getElementById('combineChartTransaksi').getContext('2d');
             if (charts.combineChartTransaksi) charts.combineChartTransaksi.destroy();
 
@@ -695,8 +723,30 @@
             let salesData = [];
             const subTitle = document.getElementById('chart1-subtitle');
 
-            if (currentMonthFilter === 'ALL') {
-                subTitle.innerText = "Bulanan";
+            const isSingleMonth = (fBulanMula !== 'ALL' && fBulanAkhir !== 'ALL' && fBulanMula === fBulanAkhir);
+
+            if (isSingleMonth) {
+                subTitle.innerText = "Mingguan (" + fBulanMula + ")";
+                const grouped = {};
+                data.forEach(r => {
+                    const w = r.minggu || 'W1';
+                    if (!grouped[w]) grouped[w] = { po: 0, sales: 0 };
+                    grouped[w].po += r.poAmount;
+                    grouped[w].sales += r.invoiceAmount;
+                });
+                const sortedKeys = Object.keys(grouped).sort();
+                labels = sortedKeys;
+                poData = sortedKeys.map(k => grouped[k].po);
+                salesData = sortedKeys.map(k => grouped[k].sales);
+            } else {
+                let labelText = "Bulanan";
+                if (fBulanMula !== 'ALL' || fBulanAkhir !== 'ALL') {
+                    const startStr = fBulanMula !== 'ALL' ? fBulanMula : 'Awal';
+                    const endStr = fBulanAkhir !== 'ALL' ? fBulanAkhir : 'Akhir';
+                    labelText = `Bulanan (${startStr} - ${endStr})`;
+                }
+                subTitle.innerText = labelText;
+
                 const grouped = {};
                 data.forEach(r => {
                     const mIdx = getMonthIndex(r.bulan);
@@ -707,19 +757,6 @@
                     }
                 });
                 const sortedKeys = Object.keys(grouped).sort((a,b) => grouped[a].idx - grouped[b].idx);
-                labels = sortedKeys;
-                poData = sortedKeys.map(k => grouped[k].po);
-                salesData = sortedKeys.map(k => grouped[k].sales);
-            } else {
-                subTitle.innerText = "Mingguan (" + currentMonthFilter + ")";
-                const grouped = {};
-                data.forEach(r => {
-                    const w = r.minggu || 'W1';
-                    if (!grouped[w]) grouped[w] = { po: 0, sales: 0 };
-                    grouped[w].po += r.poAmount;
-                    grouped[w].sales += r.invoiceAmount;
-                });
-                const sortedKeys = Object.keys(grouped).sort();
                 labels = sortedKeys;
                 poData = sortedKeys.map(k => grouped[k].po);
                 salesData = sortedKeys.map(k => grouped[k].sales);
@@ -760,7 +797,7 @@
                         tooltip: {
                             callbacks: {
                                 title: function(context) {
-                                    return (currentMonthFilter === 'ALL' ? 'Bulan: ' : 'Minggu: ') + context[0].label;
+                                    return (isSingleMonth ? 'Minggu: ' : 'Bulan: ') + context[0].label;
                                 },
                                 label: function(context) {
                                     return context.dataset.label + ': ' + formatRM(context.raw);
