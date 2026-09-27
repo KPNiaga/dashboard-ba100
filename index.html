@@ -364,7 +364,18 @@
         ];
 
         const MONTH_ORDER = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
-        const CURRENT_MONTH_INDEX = 7; // August = index 7 in 0-indexed system
+
+        // Dinamik mengikut bulan semasa atau bulan maksimum dalam data
+        function getMaxMonthIndex() {
+            let maxIdx = new Date().getMonth(); // Default bulan semasa sistem
+            if (rawData && rawData.length > 0) {
+                rawData.forEach(r => {
+                    const idx = getMonthIndex(r.bulan);
+                    if (idx > maxIdx) maxIdx = idx;
+                });
+            }
+            return maxIdx;
+        }
 
         let rawData = [];
         let charts = {};
@@ -747,10 +758,11 @@
                 }
                 subTitle.innerText = labelText;
 
+                const maxMonthIdx = getMaxMonthIndex();
                 const grouped = {};
                 data.forEach(r => {
                     const mIdx = getMonthIndex(r.bulan);
-                    if (mIdx !== -1 && mIdx <= CURRENT_MONTH_INDEX) {
+                    if (mIdx !== -1 && mIdx <= maxMonthIdx) {
                         if (!grouped[r.bulan]) grouped[r.bulan] = { po: 0, sales: 0, idx: mIdx };
                         grouped[r.bulan].po += r.poAmount;
                         grouped[r.bulan].sales += r.invoiceAmount;
@@ -1026,6 +1038,7 @@
                 dataToProcess = rawData.filter(r => r.pic === fPic);
             }
 
+            const maxMonthIdx = getMaxMonthIndex();
             const grouped = {};
             dataToProcess.forEach(r => {
                 let key;
@@ -1038,7 +1051,7 @@
                     sortIdx = key;
                 }
 
-                if (fGran === 'BULAN' && sortIdx > CURRENT_MONTH_INDEX) return;
+                if (fGran === 'BULAN' && sortIdx > maxMonthIdx) return;
 
                 if (!grouped[key]) grouped[key] = { po: 0, sales: 0, sortIdx: sortIdx };
                 grouped[key].po += r.poAmount;
